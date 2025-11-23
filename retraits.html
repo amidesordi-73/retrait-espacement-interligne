@@ -119,6 +119,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
         .control-inline input,
         .control-inline select {
@@ -249,7 +250,7 @@
         <article class="bloc">
             <h2>1. Comprendre les retraits</h2>
             <p>
-                Les <strong>retraits</strong> déplacent le paragraphe par rapport aux margres du document.
+                Les <strong>retraits</strong> déplacent le paragraphe par rapport aux marges du document.
             </p>
 
             <div class="controls">
@@ -279,6 +280,9 @@
                             <option value="first">Première ligne</option>
                             <option value="hanging">Négatif</option>
                         </select>
+                        <span class="unit">Valeur :</span>
+                        <input type="number" id="specialValue" value="1" min="-5" max="5" step="0.25" style="width:70px;">
+                        <span class="unit">cm</span>
                     </div>
                 </div>
 
@@ -291,7 +295,7 @@
                             Ce paragraphe permet de visualiser les retraits.
                         </p>
                         <p id="p2" class="preview-paragraph">
-                            Observe la première ligne selon l’option choisie.
+                            Observe la première ligne et le reste du bloc selon l’option choisie.
                         </p>
                     </div>
                     <p class="legend" id="legendRetraits"></p>
@@ -318,6 +322,7 @@
     const indentLeftInput = document.getElementById('indentLeft');
     const indentRightInput = document.getElementById('indentRight');
     const specialSelect = document.getElementById('specialIndent');
+    const specialValueInput = document.getElementById('specialValue');
     const p1 = document.getElementById('p1');
     const p2 = document.getElementById('p2');
     const legendRetraits = document.getElementById('legendRetraits');
@@ -326,16 +331,21 @@
         const left = parseFloat(indentLeftInput.value) || 0;
         const right = parseFloat(indentRightInput.value) || 0;
         const special = specialSelect.value;
+        const specialVal = parseFloat(specialValueInput.value) || 0;
 
-        let textIndent = 0;
         let marginLeft = left;
+        let textIndent = 0;
 
+        // Comportement inspiré de Word :
+        // - Aucun : tout le texte à gauche = retrait gauche
+        // - Première ligne : première ligne avancée de "specialVal" par rapport au bloc
+        // - Négatif : les lignes suivantes sont avancées (retrait français/négatif)
         if (special === 'first') {
-            textIndent = 1;
-        }
-        else if (special === 'hanging') {
-            textIndent = -1;
-            marginLeft = left + 1;
+            marginLeft = left;          // bloc à gauche
+            textIndent = specialVal;    // première ligne avancée
+        } else if (special === 'hanging') {
+            marginLeft = left + specialVal; // bloc des lignes suivantes avancé
+            textIndent = -specialVal;       // première ligne revient plus à gauche
         }
 
         [p1, p2].forEach(p => {
@@ -344,19 +354,28 @@
             p.style.textIndent = textIndent + 'cm';
         });
 
+        let specialText;
+        if (special === 'none') {
+            specialText = 'Aucun';
+        } else if (special === 'first') {
+            specialText = 'Première ligne (' + specialVal.toFixed(2).replace('.', ',') + ' cm)';
+        } else if (special === 'hanging') {
+            specialText = 'Négatif (' + specialVal.toFixed(2).replace('.', ',') + ' cm)';
+        }
+
         legendRetraits.textContent =
-            'Gauche : ' + left + ' cm | Droite : ' + right + ' cm | ' +
-            'Spécial : ' + (special === 'none' ? 'Aucun' : special);
+            'Gauche : ' + left + ' cm | Droite : ' + right + ' cm | Spécial : ' + specialText;
     }
 
     function resetRetraits() {
         indentLeftInput.value = 0;
         indentRightInput.value = 0;
         specialSelect.value = 'none';
+        specialValueInput.value = 1;
         applyRetraits();
     }
 
-    [indentLeftInput, indentRightInput, specialSelect].forEach(el => {
+    [indentLeftInput, indentRightInput, specialSelect, specialValueInput].forEach(el => {
         el.addEventListener('input', applyRetraits);
         el.addEventListener('change', applyRetraits);
     });
