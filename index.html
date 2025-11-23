@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini-site – Boîte de dialogue Paragraphe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --apf-primary: #2b579a;
+            --apf-bg: #f4f4f9;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--apf-bg);
+            color: #333;
+        }
+        header {
+            background: var(--apf-primary);
+            color: #fff;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .logos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logos img {
+            height: 34px;
+            object-fit: contain;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        header p {
+            margin: 0;
+            font-size: 13px;
+        }
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        nav ul {
+            margin: 0;
+            padding: 6px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            list-style: none;
+        }
+        nav a {
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--apf-primary);
+            color: var(--apf-primary);
+        }
+        nav a.active, nav a:hover {
+            background: var(--apf-primary);
+            color: #fff;
+        }
+        main {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 16px 30px;
+        }
+        .intro {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .intro h2 {
+            margin-top: 0;
+            color: var(--apf-primary);
+            font-size: 18px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card h3 {
+            margin-top: 0;
+            color: var(--apf-primary);
+            font-size: 17px;
+        }
+        .card p {
+            font-size: 14px;
+        }
+        .card a {
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+            background: var(--apf-primary);
+            color: #fff;
+            padding: 7px 12px;
+            font-size: 13px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .dialog-mini {
+            margin-top: 24px;
+            text-align: center;
+        }
+        .dialog-mini img {
+            max-width: 380px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        footer {
+            text-align: center;
+            font-size: 12px;
+            padding: 10px 0 16px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logos">
+        <img src="img/logo-avenir-pro-formation.png" alt="Logo Avenir Pro Formations (à fournir)">
+        <img src="img/logo-ami-des-ordi.png" alt="Logo L'ami des ordi (à fournir)">
+    </div>
+    <div>
+        <h1>Mini-site – Boîte de dialogue « Paragraphe »</h1>
+        <p>Comprendre retraits, espacements et interlignes dans Microsoft Word</p>
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="retraits.html">Retraits</a></li>
+        <li><a href="espacements.html">Espacements</a></li>
+        <li><a href="interlignes.html">Interlignes</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section class="intro">
+        <h2>Comment utiliser ce mini-site&nbsp;?</h2>
+        <p>
+            Ce mini-site présente séparément les trois grands réglages de la boîte de dialogue
+            <strong>Paragraphe</strong> de Word :
+            <strong>Retraits</strong>, <strong>Espacement</strong> et <strong>Interligne</strong>.
+        </p>
+        <p>
+            Pour chaque thème, vous trouverez&nbsp;:
+        </p>
+        <ul>
+            <li>la capture de la boîte de dialogue avec la zone concernée mise en évidence,</li>
+            <li>une explication simple pour les débutants,</li>
+            <li>un petit simulateur pour voir l’effet du réglage sur un paragraphe.</li>
+        </ul>
+    </section>
+
+    <section class="cards">
+        <article class="card">
+            <h3>1. Retraits</h3>
+            <p>Décaler un paragraphe par rapport aux marges (gauche, droite, première ligne, négatif).</p>
+            <a href="retraits.html">Ouvrir la page « Retraits »</a>
+        </article>
+
+        <article class="card">
+            <h3>2. Espacements</h3>
+            <p>Ajouter de l’espace au-dessus ou au-dessous d’un paragraphe (Avant / Après).</p>
+            <a href="espacements.html">Ouvrir la page « Espacements »</a>
+        </article>
+
+        <article class="card">
+            <h3>3. Interlignes</h3>
+            <p>Régler l’espace entre les lignes à l’intérieur d’un même paragraphe.</p>
+            <a href="interlignes.html">Ouvrir la page « Interlignes »</a>
+        </article>
+    </section>
+
+    <div class="dialog-mini">
+        <p style="font-size:13px;margin-bottom:6px;">
+            Aperçu de la boîte de dialogue utilisée sur toutes les pages&nbsp;:
+        </p>
+        <img src="img/boite-paragraphe.png" alt="Boîte de dialogue Paragraphe de Word">
+    </div>
+</main>
+
+<footer>
+    Mini-site pédagogique – Retraits, espacements et interlignes
+</footer>
+</body>
+</html>

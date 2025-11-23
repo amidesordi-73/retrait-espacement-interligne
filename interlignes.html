@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Interlignes – Boîte de dialogue Paragraphe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --apf-primary: #2b579a;
+            --apf-bg: #f4f4f9;
+            --apf-secondary: #e5efff;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--apf-bg);
+            color: #333;
+        }
+        header {
+            background: var(--apf-primary);
+            color: #fff;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .logos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logos img {
+            height: 34px;
+            object-fit: contain;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        header p {
+            margin: 0;
+            font-size: 13px;
+        }
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        nav ul {
+            margin: 0;
+            padding: 6px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            list-style: none;
+        }
+        nav a {
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--apf-primary);
+            color: var(--apf-primary);
+        }
+        nav a.active, nav a:hover {
+            background: var(--apf-primary);
+            color: #fff;
+        }
+        main {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 16px 30px;
+        }
+        h2 {
+            color: var(--apf-primary);
+            font-size: 18px;
+            margin-top: 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
+            gap: 18px;
+        }
+        @media (max-width: 850px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .bloc {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* ---------- ZONE EXERCICE (mini simulateur) ----------- */
+        .controls {
+            margin-top: 12px;
+            background: #ffffff;
+            padding: 14px 14px;
+            border-radius: 10px;
+            border: 1px solid #dde3f0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 13px;
+        }
+        .controls h3 {
+            margin: 0 0 8px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+        .control-group { margin-bottom: 10px; }
+        .control-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        .control-inline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .control-inline select,
+        .control-inline input {
+            padding: 4px 6px;
+            font-size: 13px;
+        }
+        .unit-label {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .preview-wrapper {
+            margin-top: 12px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+        }
+        .preview-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .page {
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 14px 20px;
+            max-width: 420px;
+            font-size: 14px;
+        }
+        .preview-paragraph { margin: 0; text-align: left; }
+        .preview-paragraph + .preview-paragraph {
+            margin-top: 0;
+            border-top: 1px dashed #ddd;
+            padding-top: 4px;
+        }
+        .legend {
+            font-size: 12px;
+            margin-top: 6px;
+            color: #555;
+        }
+
+        button.reset {
+            margin-top: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 16px;
+            border: 1px solid var(--apf-primary);
+            background: #fff;
+            color: var(--apf-primary);
+            cursor: pointer;
+        }
+        button.reset:hover {
+            background: var(--apf-primary);
+            color: #fff;
+        }
+
+        /* ---------- CADRE SUR L’IMAGE (gris léger) ----------- */
+        .dialog-wrapper {
+            position: relative;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .dialog-wrapper img {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        .highlight-zone {
+            position: absolute;
+            border: 2px solid #ff9800;
+            border-radius: 6px;
+            background: rgba(200,200,200,0.35);
+            box-shadow: 0 0 4px rgba(0,0,0,0.25);
+            pointer-events: none;
+
+            top: 50%;
+            left: 53%;
+            width: 45%;
+            height: 18%;
+        }
+        .label {
+            position: absolute;
+            top: 61%;
+            left: 62%;
+            background: #ffffff;
+            color: #ff9800;
+            border: 1px solid #ff9800;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            padding: 10px 0 16px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logos">
+        <img src="img/logo-avenir-pro-formation.png" alt="Logo Avenir Pro Formations (à fournir)">
+        <img src="img/logo-ami-des-ordi.png" alt="Logo L'ami des ordi (à fournir)">
+    </div>
+    <div>
+        <h1>Interlignes du paragraphe</h1>
+        <p>Régler l’espace entre les lignes – boîte de dialogue « Paragraphe »</p>
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="retraits.html">Retraits</a></li>
+        <li><a href="espacements.html">Espacements</a></li>
+        <li><a href="interlignes.html" class="active">Interlignes</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section class="grid">
+        <article class="bloc">
+            <h2>1. Comprendre l’interligne</h2>
+            <p>
+                L’<strong>interligne</strong> correspond à l’espace entre les lignes à l’intérieur d’un même paragraphe.
+                Il permet d’aérer ou de resserrer le texte sans changer la taille de la police.
+            </p>
+
+            <div class="controls">
+                <h3>Petit simulateur – Interligne</h3>
+
+                <div class="control-group">
+                    <label for="lineMode">Interligne :</label>
+                    <div class="control-inline">
+                        <select id="lineMode">
+                            <option value="simple">Simple</option>
+                            <option value="1.15">Multiple 1,15</option>
+                            <option value="1.5">1,5 ligne</option>
+                            <option value="2">Double</option>
+                            <option value="at_least">Au moins</option>
+                            <option value="exact">Exactement</option>
+                            <option value="multiple">Multiple</option>
+                        </select>
+                        <span id="valueLabel" class="unit-label" style="display:none;">À&nbsp;:</span>
+                        <input type="number" id="lineValue"
+                               value="1.00" min="0.50" max="3.00" step="0.10"
+                               style="width:70px; display:none;">
+                        <span id="valueUnit" class="unit-label" style="display:none;">lignes (approx.)</span>
+                    </div>
+                </div>
+
+                <button type="button" class="reset" onclick="resetInterligne()">Réinitialiser</button>
+
+                <div class="preview-wrapper">
+                    <div class="preview-title">Aperçu</div>
+                    <div class="page">
+                        <p id="i_p1" class="preview-paragraph">
+                            Ce paragraphe montre l’effet de l’interligne.
+                        </p>
+                        <p id="i_p2" class="preview-paragraph">
+                            En augmentant l’interligne, le texte devient plus aéré.
+                        </p>
+                    </div>
+                    <p class="legend" id="legendInterligne"></p>
+                </div>
+            </div>
+        </article>
+
+        <article class="bloc">
+            <h2>2. Boîte de dialogue – zone « Interligne »</h2>
+            <div class="dialog-wrapper">
+                <img src="img/boite-paragraphe.png" alt="Boîte de dialogue Paragraphe de Word">
+                <div class="highlight-zone"></div>
+                <div class="label">Interligne</div>
+            </div>
+        </article>
+    </section>
+</main>
+
+<footer>
+    Mini-site – Page « Interlignes »
+</footer>
+
+<script>
+    const lineMode = document.getElementById('lineMode');
+    const lineValue = document.getElementById('lineValue');
+    const valueLabel = document.getElementById('valueLabel');
+    const valueUnit = document.getElementById('valueUnit');
+    const i_p1 = document.getElementById('i_p1');
+    const i_p2 = document.getElementById('i_p2');
+    const legendInterligne = document.getElementById('legendInterligne');
+
+    function updateValueVisibility() {
+        const mode = lineMode.value;
+        const needsValue = (mode === 'at_least' || mode === 'exact' || mode === 'multiple');
+
+        if (needsValue) {
+            valueLabel.style.display = 'inline';
+            lineValue.style.display = 'inline';
+            valueUnit.style.display = 'inline';
+        } else {
+            valueLabel.style.display = 'none';
+            lineValue.style.display = 'none';
+            valueUnit.style.display = 'none';
+        }
+
+        // Valeur par défaut raisonnable quand on passe à un mode avec valeur
+        if (needsValue && !lineValue.value) {
+            lineValue.value = '1.00';
+        }
+    }
+
+    function applyInterligne() {
+        const mode = lineMode.value;
+        let factor = 1;
+        let description = '';
+
+        if (mode === 'simple') {
+            factor = 1;
+            description = 'Simple';
+        } else if (mode === '1.15') {
+            factor = 1.15;
+            description = 'Multiple 1,15';
+        } else if (mode === '1.5') {
+            factor = 1.5;
+            description = '1,5 ligne';
+        } else if (mode === '2') {
+            factor = 2;
+            description = 'Double';
+        } else {
+            // Modes Au moins / Exactement / Multiple
+            let val = parseFloat(lineValue.value);
+            if (isNaN(val) || val <= 0) {
+                val = 1;
+                lineValue.value = '1.00';
+            }
+            factor = val;
+
+            if (mode === 'at_least') {
+                description = 'Au moins ' + val.toFixed(2).replace('.', ',') + ' lignes (approx.)';
+            } else if (mode === 'exact') {
+                description = 'Exactement ' + val.toFixed(2).replace('.', ',') + ' lignes (approx.)';
+            } else if (mode === 'multiple') {
+                description = 'Multiple ' + val.toFixed(2).replace('.', ',') + ' lignes';
+            }
+        }
+
+        [i_p1, i_p2].forEach(p => {
+            p.style.lineHeight = factor;
+        });
+
+        legendInterligne.textContent = 'Interligne : ' + description;
+    }
+
+    function resetInterligne() {
+        lineMode.value = 'simple';
+        lineValue.value = '1.00';
+        updateValueVisibility();
+        applyInterligne();
+    }
+
+    lineMode.addEventListener('change', () => {
+        updateValueVisibility();
+        applyInterligne();
+    });
+
+    lineValue.addEventListener('input', applyInterligne);
+
+    // Initialisation
+    updateValueVisibility();
+    applyInterligne();
+</script>
+</body>
+</html>
